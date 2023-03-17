@@ -32,3 +32,23 @@ app.post("./api/notes", function (req, res) {
       res.json(notes);
     });
 });
+// delete route
+app.delete("/api/notes/:id", function (req, re) { 
+    const idtoDelete= parseOnt(req.params.id);
+    readFileAsync("./develop/db/db.json", "utf8").then(function (userData) { 
+        const note = [].concat(JSON.parse(userData));
+        const newNotes = []
+        for(let i = 0; i < note.length; i ++){
+            if(idtoDelete !== note [i].id){
+                newNotes.push(note[i])
+            }
+        }
+        return newNotes
+     }).then(function(note){
+        writeFileAsync(".Develop/db/db.json", JSON.stringify(note))
+        res.send("Save complete.");
+     })
+ })
+ //saving
+// needs app listener and to complete this get function
+ app.get("/notes", function (req, res))
