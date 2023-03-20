@@ -2,6 +2,9 @@ const fs = require("fs");
 const express = require("express");
 const path = require("path");
 const util = require("util");
+const readFileAsync = util.promisify(fs.readFile);
+const writeFileAsync = util.promisify(fs.writeFile);
+
 
 const PORT = 3001;
 const app = express();
@@ -12,7 +15,7 @@ app.use(express.json());
 app.use(express.static("./Develop/public"));
 // Get route
 app.get("/api/notes", function (req, res) {
-  readFileAsync("./Develop/db.json", "utf8").then(function (data) {
+  readFileAsync("./Develop/db/db.json", "utf8").then(function (data) {
     notes = [].concat(JSON.parse(userData));
     res.json(notes);
   });
@@ -23,9 +26,9 @@ app.post("./api/notes", function (req, res) {
   readFileAsync(".Develop/db/db.json", "utf8")
     .then(function (userData) {
       const note = [].concat(JSON.parse(userData));
-      notes.id = note.length + 1;
+      notes.id = note.length + 1
       note.push(notes);
-      return notes;
+      return note;
     })
     .then(function (note) {
       writeFileAsync("Develop/db/db.json", JSON.stringify(note));
@@ -51,4 +54,19 @@ app.delete("/api/notes/:id", function (req, re) {
  })
  //saving
 // needs app listener and to complete this get function
- app.get("/notes", function (req, res))
+ app.get("/notes", function (req, res){
+  res.sendFile(path.join(__dirname, "./Develop/public/notes.html"));
+ });
+
+ app.get("/", function(req,res){
+  res.sendFile(path.join(__dirname,"./Develop/public/index.html"));
+ });
+
+ app.get("*", function(req,res){
+  res.sendFile(path.join(__dirname,"./Develop/public/index.html"));
+ });
+
+ //Listener
+app.listen(PORT,function(){
+  console.log("listing Port", PORT);
+})
