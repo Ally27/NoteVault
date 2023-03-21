@@ -13,7 +13,7 @@ A professional note taker application designed to secure your goals.
 * [License](#license)
 
 ## Installation
-
+Express & uuid
 ## Usage
 
 ## Contributors
